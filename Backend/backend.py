@@ -25,10 +25,10 @@ def read_pickle(bucket_name, pickle_route):
     pick = pickle.loads(blob.download_as_bytes())
     return pick
 
-index_title = read_pickle('208564682title','body/Title_BM25.pkl')
-index_data = read_pickle('208564682bodyindex','body/body_BM25.pkl')
-title_dict = read_pickle('208564682indextitle','path/to/TitleId.pickle')
-pageRank = read_pickle('208564682pagerank','result_dict.pickle')
+index_title = read_pickle('_title','body/Title_BM25.pkl')
+index_data = read_pickle('_bodyindex','body/body_BM25.pkl')
+title_dict = read_pickle('_indextitle','path/to/TitleId.pickle')
+pageRank = read_pickle('_pagerank','result_dict.pickle')
 
 # Tokenize and remove stopwords
 english_stopwords = frozenset(stopwords.words('english'))
@@ -59,8 +59,8 @@ def search_backend(query):
     # Use ThreadPoolExecutor for parallel execution
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # Execute search_helper concurrently for title and body
-        future_title = executor.submit(search_helper, tokens, '208564682title', index_title)
-        future_body = executor.submit(search_helper, tokens, '208564682bodyindex', index_data)
+        future_title = executor.submit(search_helper, tokens, '_title', index_title)
+        future_body = executor.submit(search_helper, tokens, '_bodyindex', index_data)
         # Wait for both threads to complete
         top_title = future_title.result()
         top_body = future_body.result()
